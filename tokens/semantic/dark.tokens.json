@@ -1,0 +1,79 @@
+{
+  "color": {
+    "$type": "color",
+    "content": {
+      "primary": {
+        "$value": "{color.neutral.50}",
+        "$description": "Main text on the page background."
+      },
+      "secondary": {
+        "$value": "{color.neutral.200}",
+        "$description": "Instructions under the pack (≥ 4.5:1 on the page background)."
+      }
+    },
+    "focus": {
+      "ring": {
+        "$value": "{color.gold.300}",
+        "$description": "Keyboard focus indicator (≥ 3:1 against the page)."
+      }
+    },
+    "glow": {
+      "default": {
+        "$value": "{color.gold.400}"
+      }
+    },
+    "highlight": {
+      "core": {
+        "$value": "{color.neutral.0}"
+      },
+      "strong": {
+        "$value": "{color.alpha.white-70}"
+      },
+      "soft": {
+        "$value": "{color.alpha.white-20}"
+      },
+      "line": {
+        "$value": "{color.alpha.white-90}"
+      }
+    },
+    "shadow": {
+      "soft": {
+        "$value": "{color.alpha.black-60}"
+      },
+      "outline": {
+        "$value": "{color.alpha.black-60}"
+      }
+    },
+    "rarity": {
+      "rare": {
+        "$value": "{color.cyan.300}"
+      },
+      "epic": {
+        "$value": "{color.violet.300}"
+      },
+      "legendary": {
+        "$value": "{color.gold.400}"
+      }
+    },
+    "control": {
+      "background": {
+        "$value": "{color.neutral.900}"
+      },
+      "background-hover": {
+        "$value": "{color.neutral.800}"
+      },
+      "text": {
+        "$value": "{color.neutral.50}"
+      },
+      "border": {
+        "$value": "{color.neutral.400}"
+      }
+    },
+    "magic": {
+      "default": {
+        "$value": "{color.violet.500}",
+        "$description": "Particles and veils of the magic effects."
+      }
+    }
+  }
+}

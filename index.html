@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="fr" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>pack-opening — démo</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        overflow-x: hidden;
+        background: radial-gradient(circle at 50% 30%, #2a1f55, #0b0a1a 70%);
+        color: #eae7ff;
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        gap: 24px;
+        padding: 24px 16px 32px;
+      }
+      header { text-align: center; }
+      h1 { margin: 0 0 6px; font-size: 22px; letter-spacing: .02em; }
+      header p { margin: 0; opacity: .7; font-size: 14px; }
+      main { display: grid; place-items: center; min-height: 600px; }
+      .controls {
+        display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; align-items: center;
+      }
+      button, select, label {
+        font: inherit; font-size: 14px; color: inherit;
+      }
+      button, select {
+        background: rgb(255 255 255 / .08); border: 1px solid rgb(255 255 255 / .18);
+        border-radius: 999px; padding: 8px 16px; cursor: pointer;
+      }
+      button:hover { background: rgb(255 255 255 / .16); }
+      label { display: inline-flex; gap: 6px; align-items: center; opacity: .85; }
+      #log {
+        margin: 12px auto 0; width: min(560px, 100%); height: 120px; overflow: auto;
+        font: 12px/1.6 ui-monospace, Menlo, monospace; background: rgb(0 0 0 / .3);
+        border-radius: 10px; padding: 10px 12px; opacity: .85;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>pack-opening</h1>
+      <p>Glisse le long de la ligne en haut du booster pour le déchirer.</p>
+    </header>
+
+    <main>
+      <pack-opening id="pack" card-back="/demo/assets/back.svg">
+        <img data-pack src="/demo/assets/booster.svg" alt="Booster Stellar, série 1" />
+        <img data-card src="/demo/assets/card-1.svg" alt="Flammèche" data-rarity="common" />
+        <img data-card src="/demo/assets/card-2.svg" alt="Aquari" data-rarity="common" />
+        <img data-card src="/demo/assets/card-3.svg" alt="Voltix" data-rarity="rare" />
+        <img data-card src="/demo/assets/card-4.svg" alt="Sylvane" data-rarity="epic" />
+        <img data-card src="/demo/assets/card-5.svg" alt="Astralis" data-rarity="legendary" />
+      </pack-opening>
+    </main>
+
+    <footer>
+      <div class="controls">
+        <button id="reset">Rejouer</button>
+        <button id="open">open()</button>
+        <button id="next">next()</button>
+        <select id="direction" aria-label="Sens de déchirure">
+          <option value="any">Sens : libre</option>
+          <option value="ltr">Sens : gauche → droite</option>
+          <option value="rtl">Sens : droite → gauche</option>
+        </select>
+        <label><input type="checkbox" id="back" checked /> Dos de carte</label>
+        <label><input type="checkbox" id="summary" checked /> Résumé</label>
+        <label><input type="color" id="fx-color" value="#b968ff" /> Couleur magique</label>
+        <select id="preset" aria-label="Preset">
+          <option value="full">Preset : full</option>
+          <option value="minimal">Preset : minimal</option>
+          <option value="none">Preset : none</option>
+        </select>
+        <button id="all">revealAll()</button>
+      </div>
+      <pre id="log" aria-label="Journal des événements"></pre>
+    </footer>
+
+    <script type="module">
+      import '/src/styles/index.css';
+      import '/src/styles/magic.css';
+      import '/src/index.ts';
+      import '/src/magic/index.ts';
+
+      const pack = document.getElementById('pack');
+      const log = document.getElementById('log');
+      const write = (line) => {
+        log.textContent += line + '\n';
+        log.scrollTop = log.scrollHeight;
+      };
+
+      let lastProgress = -1;
+      for (const type of ['po-state-change', 'po-tear-start', 'po-tear-progress', 'po-tear-cancel', 'po-opened', 'po-card-reveal', 'po-complete']) {
+        pack.addEventListener(type, (e) => {
+          if (type === 'po-tear-progress') {
+            // Only log every 25 %.
+            const step = Math.floor(e.detail.progress * 4);
+            if (step === lastProgress) return;
+            lastProgress = step;
+            return write(`${type}  ${Math.round(e.detail.progress * 100)}%`);
+          }
+          lastProgress = -1;
+          const d = e.detail;
+          const info = 'index' in d ? `  ${d.index + 1}/${d.total} ${d.name}${d.rarity ? ' (' + d.rarity + ')' : ''}` : 'direction' in d ? `  ${d.direction}` : 'state' in d ? `  ${d.previous} → ${d.state}` : 'total' in d ? `  ${d.total} cartes` : 'cards' in d ? `  ${d.cards.length} cartes` : `  ${Math.round(d.progress * 100)}%`;
+          write(type + info);
+        });
+      }
+
+      document.getElementById('reset').onclick = () => { log.textContent = ''; pack.reset(); };
+      document.getElementById('open').onclick = () => pack.open();
+      document.getElementById('next').onclick = () => pack.next();
+      document.getElementById('direction').onchange = (e) => pack.setAttribute('tear-direction', e.target.value);
+      document.getElementById('back').onchange = (e) => {
+        if (e.target.checked) pack.setAttribute('card-back', '/demo/assets/back.svg');
+        else pack.removeAttribute('card-back');
+        pack.reset();
+      };
+      document.getElementById('summary').onchange = (e) => {
+        if (e.target.checked) pack.removeAttribute('disable');
+        else pack.setAttribute('disable', 'summary');
+      };
+      document.getElementById('preset').onchange = (e) => pack.setAttribute('preset', e.target.value);
+      document.getElementById('all').onclick = () => pack.revealAll();
+      document.getElementById('fx-color').oninput = (e) => pack.setAttribute('fx-color', e.target.value);
+    </script>
+  </body>
+</html>

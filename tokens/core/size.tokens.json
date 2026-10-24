@@ -1,0 +1,38 @@
+{
+  "size": {
+    "$type": "dimension",
+    "pack": { "$value": "280px" },
+    "hairline": { "$value": "2px" },
+    "stroke": { "$value": "3px" },
+    "dot": { "$value": "6px" },
+    "knob": { "$value": "16px" },
+    "target": { "$value": "44px" }
+  },
+  "space": {
+    "$type": "dimension",
+    "100": { "$value": "4px" },
+    "200": { "$value": "8px" },
+    "300": { "$value": "12px" },
+    "400": { "$value": "16px" },
+    "500": { "$value": "18px" },
+    "600": { "$value": "24px" },
+    "1200": { "$value": "48px" }
+  },
+  "radius": {
+    "$type": "dimension",
+    "sm": { "$value": "6px" },
+    "md": { "$value": "12px" },
+    "full": { "$value": "999px" }
+  },
+  "font": {
+    "family": {
+      "base": { "$value": ["system-ui", "-apple-system", "Segoe UI", "Roboto", "sans-serif"], "$type": "fontFamily" }
+    },
+    "size": {
+      "label": { "$value": "14px", "$type": "dimension" }
+    },
+    "weight": {
+      "label": { "$value": 600, "$type": "fontWeight" }
+    }
+  }
+}

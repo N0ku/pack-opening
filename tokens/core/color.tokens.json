@@ -1,0 +1,47 @@
+{
+  "color": {
+    "$type": "color",
+    "neutral": {
+      "0": { "$value": "#ffffff" },
+      "50": { "$value": "#f5f4fb" },
+      "200": { "$value": "#d9d6ea" },
+      "400": { "$value": "#8f8aa8" },
+      "600": { "$value": "#4b4666" },
+      "800": { "$value": "#221d38" },
+      "900": { "$value": "#15112a" },
+      "950": { "$value": "#0b0a1a" }
+    },
+    "gold": {
+      "300": { "$value": "#ffe08a" },
+      "400": { "$value": "#ffd66b" },
+      "500": { "$value": "#ffc53d" },
+      "800": { "$value": "#7a5200" }
+    },
+    "cyan": {
+      "300": { "$value": "#7fe3ff" },
+      "500": { "$value": "#4cb8ff" },
+      "800": { "$value": "#0b4f8a" }
+    },
+    "violet": {
+      "300": { "$value": "#d6b3ff" },
+      "500": { "$value": "#b968ff" },
+      "700": { "$value": "#6b2bbf" }
+    },
+    "holo": {
+      "pink": { "$value": "#ff7ad9" },
+      "lilac": { "$value": "#a98bff" },
+      "sky": { "$value": "#6fd8ff" },
+      "mint": { "$value": "#8dffb0" },
+      "sun": { "$value": "#ffe07a" }
+    },
+    "alpha": {
+      "white-20": { "$value": "#ffffff33" },
+      "white-60": { "$value": "#ffffff99" },
+      "white-70": { "$value": "#ffffffb3" },
+      "white-90": { "$value": "#ffffffe6" },
+      "black-35": { "$value": "#00000059" },
+      "black-60": { "$value": "#00000099" },
+      "transparent": { "$value": "#00000000" }
+    }
+  }
+}

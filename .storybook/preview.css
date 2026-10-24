@@ -1,0 +1,9 @@
+/* Story canvas follows the semantic tokens of the selected theme. */
+body {
+  background: var(--po-color-control-background);
+  color: var(--po-color-content-primary);
+}
+
+[data-theme='dark'] body {
+  background: var(--po-color-neutral-950);
+}

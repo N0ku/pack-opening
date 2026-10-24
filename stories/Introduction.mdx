@@ -1,0 +1,31 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as PackStories from './PackOpening.stories';
+
+<Meta title="Introduction" />
+
+# pack-opening
+
+Design system pour animer l’ouverture d’un **booster de cartes** : on glisse le long du haut du paquet pour le
+déchirer, les cartes sortent, on les retourne puis on les fait défiler jusqu’au résumé.
+
+<Canvas of={PackStories.Playground} />
+
+## Principes
+
+| | |
+| --- | --- |
+| **Une fondation, plusieurs intégrations** | Tout repose sur le custom element `<pack-opening>`. Il marche en HTML pur, et des wrappers typés existent pour React et Vue. |
+| **Deux modes** | En `auto`, on passe le booster et les cartes en enfants et la structure est générée. En `headless`, on écrit soi-même chaque part (`data-part="…"`). |
+| **Logique / style / HTML séparés** | Le TypeScript n’écrit que des attributs d’état (`data-state`, `data-phase`…) et des variables CSS. Toute l’animation est en CSS. |
+| **Style en couches** | `tokens.css` (DTCG), `base.css` (mécanique obligatoire) et `theme.css` (visuel optionnel), dans `@layer po.tokens, po.base, po.theme` : vos styles l’emportent toujours. |
+| **Features à la carte** | Un preset (`full`, `minimal`, `none`), puis `enable` / `disable` en HTML, ou `features: { … }` en JS. |
+| **Accessible par défaut** | Bouton natif, clavier complet, focus géré, annonces aux lecteurs d’écran, cartes non révélées cachées, `prefers-reduced-motion`. |
+
+## Pour aller plus loin
+
+- **Installation** : HTML/CDN, npm, React, Vue.
+- **Pack opening** : le Playground et la référence des attributs, événements et tokens.
+- **Features** : chaque feature activée ou désactivée.
+- **Headless** : écrire son propre markup.
+- **Theming** et **Tokens** : personnaliser le rendu.
+- **Accessibility** : clavier, annonces, recommandations.

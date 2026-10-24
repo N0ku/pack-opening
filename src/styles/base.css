@@ -1,0 +1,452 @@
+/* ==========================================================================
+   pack-opening · base.css — the mechanics. Required.
+   Stacking, clipping, visibility per state, layout, focus. No colour, no motion:
+   those live in theme.css, which you can leave out and replace with your own.
+   Every value comes from tokens.css (--po-*).
+   ========================================================================== */
+
+@layer po.tokens, po.base, po.theme;
+
+/* The few declarations marked !important are mechanics that generic page styles (`button {}`,
+   `img {}` resets…) must not break. Layered !important beats unlayered rules; change them through
+   the tokens instead. */
+
+/* Animatable numbers driven by the swipe (registered so the theme can transition them). */
+@property --po-progress {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --po-cut-from {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --po-cut-to {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
+@layer po.base {
+  pack-opening {
+    /* Set by the component: --po-speed (speed option). --po-time scales every duration. */
+    --po-speed: 1;
+    --po-motion-factor: 1;
+    --po-time: calc(var(--po-motion-factor) / var(--po-speed));
+    --po-dir-sign: 1;
+    --po-peel-x: 100%;
+    --po-peel-sign: -1;
+    --po-card-width: calc(var(--po-pack-width) * var(--po-card-width-ratio));
+    --po-summary-card-width: calc(var(--po-card-width) * var(--po-summary-card-ratio));
+
+    position: relative;
+    display: grid;
+    justify-items: center;
+    max-width: 100%;
+    font-family: var(--po-typography-family);
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  pack-opening[data-motion='reduce'] {
+    --po-motion-factor: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    pack-opening {
+      --po-motion-factor: 0;
+    }
+  }
+
+  pack-opening[data-dir='rtl'] {
+    --po-dir-sign: -1;
+    --po-peel-x: 0%;
+    --po-peel-sign: 1;
+  }
+
+  pack-opening:focus {
+    outline: none;
+  }
+
+  /* Before set-up (auto mode): only the sealed pack shows. */
+  pack-opening:not([data-state]) > [data-card] {
+    display: none;
+  }
+
+  pack-opening:not([data-state]) > [data-pack] {
+    display: block;
+    width: var(--po-pack-width);
+    max-width: 100%;
+  }
+
+  :where(pack-opening) [data-part='stage'] {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 100%;
+  }
+
+  :where(pack-opening) [data-part='stage'] > * {
+    grid-area: 1 / 1;
+  }
+
+  /* ---------------------------------------------------------------- Pack */
+
+  :where(pack-opening) [data-part='pack'] {
+    position: relative;
+    z-index: 2;
+    width: var(--po-pack-width);
+    max-width: 100%;
+  }
+
+  :where(pack-opening[data-features~='hint']) [data-part='pack'] {
+    margin-block-end: var(--po-hint-label-space);
+  }
+
+  :where(pack-opening) :is([data-part='pack-body'], [data-part='pack-top']) > * {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    pointer-events: none;
+    -webkit-user-drag: none;
+  }
+
+  :where(pack-opening) :is([data-part='pack-body'], [data-part='pack-top']) > img {
+    height: auto !important;
+  }
+
+  :where(pack-opening) [data-part='pack-body'] {
+    position: relative;
+    clip-path: var(--po-clip-body, none);
+  }
+
+  :where(pack-opening) [data-part='pack-top'] {
+    position: absolute;
+    inset: 0;
+    clip-path: var(--po-clip-top, none);
+  }
+
+  /* 3D edges of the pack and the deck: only with the `depth` feature (styled in theme.css). */
+  :where(pack-opening) :is([data-part='pack-side'], [data-part='deck-side']) {
+    position: absolute;
+    pointer-events: none;
+  }
+
+  :where(pack-opening:not([data-features~='depth'])) :is([data-part='pack-side'], [data-part='deck-side']) {
+    display: none;
+  }
+
+  /* Invisible overlay: only its focus ring shows (focus tokens). */
+  :where(pack-opening) [data-part='pack-button'] {
+    position: absolute !important;
+    z-index: 5;
+    inset: 0 !important;
+    width: auto !important;
+    height: auto !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: var(--po-focus-radius) !important;
+    background: none !important;
+    box-shadow: none !important;
+    color: inherit;
+    font-size: 0 !important;
+    cursor: default;
+    appearance: none !important;
+  }
+
+  :where(pack-opening[data-features~='tap']) [data-part='pack-button'] {
+    cursor: pointer;
+  }
+
+  :where(pack-opening) [data-part='pack-description'] {
+    display: none;
+  }
+
+  :where(pack-opening) [data-part='tear-zone'] {
+    position: absolute;
+    z-index: 6;
+    top: calc((var(--po-tear-line) - var(--po-tear-zone) / 2) * 100%);
+    left: calc(var(--po-tear-overflow) * -100%);
+    right: calc(var(--po-tear-overflow) * -100%);
+    height: calc(var(--po-tear-zone) * 100%);
+    touch-action: none;
+    cursor: grab;
+  }
+
+  :where(pack-opening[data-state='tearing']) [data-part='tear-zone'] {
+    cursor: grabbing;
+  }
+
+  :where(pack-opening:not([data-features~='swipe'])) [data-part='tear-zone'],
+  :where(pack-opening:not([data-state='idle']):not([data-state='tearing'])) [data-part='tear-zone'] {
+    display: none;
+  }
+
+  :where(pack-opening) [data-part='cut'] {
+    position: absolute;
+    z-index: 4;
+    top: calc(var(--po-tear-line) * 100%);
+    left: calc(var(--po-cut-from) * 100%);
+    right: calc((1 - var(--po-cut-to)) * 100%);
+    height: var(--po-cut-size);
+    translate: 0 -50%;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  :where(pack-opening:is([data-state='tearing'], [data-state='opening'])) [data-part='cut'] {
+    visibility: visible;
+  }
+
+  :where(pack-opening) :is([data-part='shine'], [data-part='effects']) {
+    position: absolute;
+    z-index: 3;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  :where(pack-opening) [data-part='effects'] {
+    z-index: 6;
+  }
+
+  :where(pack-opening:not([data-features~='shine'])) [data-part='shine'] {
+    display: none;
+  }
+
+  :where(pack-opening) [data-part='hint'] {
+    position: absolute;
+    z-index: 4;
+    top: calc(var(--po-tear-line) * 100%);
+    left: calc(var(--po-hint-inset) * 100%);
+    right: calc(var(--po-hint-inset) * 100%);
+    height: var(--po-hint-size);
+    translate: 0 -50%;
+    pointer-events: none;
+  }
+
+  :where(pack-opening) [data-part='hint-label'] {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    translate: -50% 0;
+    margin: var(--po-hint-label-gap) 0 0;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  :where(pack-opening) [data-part='hint-label']:empty,
+  :where(pack-opening:not([data-features~='hint'])) :is([data-part='hint'], [data-part='hint-label']),
+  :where(pack-opening:not([data-state='idle'])) :is([data-part='hint'], [data-part='hint-label']) {
+    display: none;
+  }
+
+  :where(pack-opening) [data-part='burst'] {
+    position: absolute;
+    z-index: 4;
+    top: calc(var(--po-tear-line) * 100%);
+    left: 50%;
+    width: calc(var(--po-burst-size) * 100%);
+    aspect-ratio: 1;
+    opacity: 0;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  :where(pack-opening:not([data-features~='burst'])) [data-part='burst'] {
+    display: none;
+  }
+
+  :where(pack-opening) [data-part='spark'] {
+    position: absolute;
+    top: calc(var(--po-tear-line) * 100%);
+    left: calc(var(--po-spark-x, 0.5) * 100%);
+    width: var(--po-spark-size);
+    height: var(--po-spark-size);
+    transform: translate(-50%, -50%);
+  }
+
+  /* The strip is gone once the pack is open. */
+  :where(pack-opening:is([data-phase='settle'], [data-state='revealing'], [data-state='complete'])) :is([data-part='pack-top'], [data-part='cut']) {
+    visibility: hidden;
+  }
+
+  :where(pack-opening:is([data-state='revealing'], [data-state='complete'])) [data-part='pack'] {
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  /* ---------------------------------------------------------------- Cards */
+
+  :where(pack-opening) [data-part='cards'] {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    width: var(--po-card-width);
+    max-width: 100%;
+    aspect-ratio: var(--po-card-ratio);
+    visibility: hidden;
+  }
+
+  :where(pack-opening:is([data-phase='open'], [data-phase='settle'], [data-state='revealing'], [data-state='complete'])) [data-part='cards'] {
+    visibility: visible;
+  }
+
+  :where(pack-opening[data-state='revealing']) [data-part='cards'] {
+    z-index: 3;
+  }
+
+  :where(pack-opening) [data-part='card'] {
+    grid-area: 1 / 1;
+    position: relative;
+    z-index: calc(var(--po-total, 1) - var(--po-index, 0));
+    width: 100%;
+    height: 100%;
+    perspective: var(--po-view-perspective);
+    transform: translateX(var(--po-drag-x, 0px)) rotate(calc(var(--po-drag-ratio, 0) * var(--po-card-drag-rotation) * 1deg));
+  }
+
+  :where(pack-opening) [data-part='card'][data-stack='top'] {
+    cursor: grab;
+    touch-action: none;
+  }
+
+  :where(pack-opening) [data-part='card'][data-stack='gone'] {
+    visibility: hidden;
+  }
+
+  :where(pack-opening) [data-part='card'][data-stack='below'] {
+    pointer-events: none;
+  }
+
+  :where(pack-opening) [data-part='card-flip'] {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+  }
+
+  :where(pack-opening) [data-part='card'][data-face='down'] [data-part='card-flip'] {
+    transform: rotateY(180deg);
+  }
+
+  :where(pack-opening) :is([data-part='card-front'], [data-part='card-back']) {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  :where(pack-opening) [data-part='card-front'] {
+    transform: rotateY(0deg);
+  }
+
+  :where(pack-opening) [data-part='card-back'] {
+    transform: rotateY(180deg);
+  }
+
+  :where(pack-opening) :is([data-part='card-front'], [data-part='card-back']) > * {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    object-fit: cover;
+    pointer-events: none;
+    -webkit-user-drag: none;
+  }
+
+  /* Summary: every card side by side. */
+  :where(pack-opening[data-state='complete'][data-features~='summary']) [data-part='cards'] {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--po-summary-gap);
+    width: min(
+      100%,
+      calc(var(--po-summary-card-width) * var(--po-summary-columns) + var(--po-summary-gap) * (var(--po-summary-columns) - 1))
+    );
+    aspect-ratio: auto;
+  }
+
+  :where(pack-opening[data-state='complete'][data-features~='summary']) [data-part='cards'] ~ [data-part='pack'] {
+    display: none;
+  }
+
+  :where(pack-opening[data-state='complete'][data-features~='summary']) [data-part='card'] {
+    width: var(--po-summary-card-width);
+    height: auto;
+    aspect-ratio: var(--po-card-ratio);
+    visibility: visible;
+    cursor: default;
+    transform: none;
+    translate: none;
+    scale: none;
+    touch-action: auto;
+  }
+
+  :where(pack-opening[data-state='complete'][data-features~='summary']) [data-part='card-flip'] {
+    transform: none;
+  }
+
+  /* ---------------------------------------------------------------- Magic effects
+     Canvas of the particles (`pack-opening/magic`): over everything, never in the way. It reaches
+     `--po-fx-bleed` above and below the component; sideways, the effects set --po-fx-left /
+     --po-fx-right to what the viewport has room for. */
+
+  :where(pack-opening) [data-part='fx'] {
+    position: absolute;
+    z-index: 7;
+    top: calc(var(--po-fx-bleed) * -1);
+    left: calc(var(--po-fx-left, 0px) * -1);
+    width: calc(100% + var(--po-fx-left, 0px) + var(--po-fx-right, 0px));
+    height: calc(100% + var(--po-fx-bleed) * 2);
+    pointer-events: none;
+  }
+
+  :where(pack-opening:not([data-fx])) [data-part='fx'] {
+    display: none;
+  }
+
+  /* ---------------------------------------------------------------- Controls */
+
+  :where(pack-opening) [data-part='skip'] {
+    display: none;
+    min-height: var(--po-skip-min-height);
+    margin-block-start: var(--po-skip-gap);
+  }
+
+  :where(pack-opening[data-features~='skip'][data-state='revealing']) [data-part='skip'] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  :where(pack-opening) [data-part='announcer'] {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    margin: -1px !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    clip-path: inset(50%) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+  }
+
+  /* Focus stays visible whatever the theme (WCAG 2.4.7). */
+  :where(pack-opening) :is([data-part='pack-button'], [data-part='skip'], [data-part='card'][data-stack='top'], [data-part='cards']):focus-visible,
+  pack-opening:focus-visible {
+    outline: var(--po-focus-width) solid var(--po-focus-color);
+    outline-offset: var(--po-focus-offset);
+    border-radius: var(--po-focus-radius);
+  }
+}

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 630 880" width="630" height="880">
+  <defs>
+    <radialGradient id="bg" cx=".5" cy=".5" r=".75"><stop offset="0" stop-color="#2a3d8f"/><stop offset="1" stop-color="#0b1233"/></radialGradient>
+    <pattern id="grid" width="42" height="42" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="42" height="42" fill="none" stroke="#ffffff" stroke-opacity=".07" stroke-width="2"/>
+    </pattern>
+  </defs>
+  <rect width="630" height="880" rx="36" fill="#d9b25a"/>
+  <rect x="22" y="22" width="586" height="836" rx="22" fill="url(#bg)"/>
+  <rect x="22" y="22" width="586" height="836" rx="22" fill="url(#grid)"/>
+  <g transform="translate(315 440)" fill="none" stroke="#e8c76f">
+    <circle r="170" stroke-width="6"/><circle r="140" stroke-width="2" stroke-dasharray="6 10"/>
+    <path d="M0 -110 L32 -34 L110 -34 L48 14 L70 92 L0 46 L-70 92 L-48 14 L-110 -34 L-32 -34 Z" fill="#e8c76f" stroke="none"/>
+  </g>
+  <text x="315" y="720" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-weight="900" font-size="54" letter-spacing="10" fill="#e8c76f">STELLAR</text>
+</svg>

@@ -1,0 +1,58 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import tokens from '../src/styles/generated/tokens.json';
+
+<Meta title="Tokens" />
+
+# Tokens
+
+Source unique : les fichiers **DTCG** de `tokens/`, en trois couches, construits par Style Dictionary
+(`npm run tokens`) en `tokens.css` (variables `--po-*`) et en objets JS/TS.
+
+| Couche | Fichiers | Rôle |
+| --- | --- | --- |
+| core | `tokens/core/*.tokens.json` | Palette, durées, courbes, tailles. Valeurs brutes. |
+| semantic | `tokens/semantic/{light,dark}.tokens.json` | Intentions (texte, focus, lueur, rareté), par thème. |
+| component | `tokens/component/pack-opening.tokens.json` | Ce que le composant consomme. C'est la couche à surcharger. |
+
+Le thème sombre s’active avec `data-theme="dark"` ou automatiquement avec `prefers-color-scheme: dark`.
+Pour personnaliser, surchargez les tokens **component** :
+
+```css
+pack-opening {
+  --po-pack-width: 320px;
+  --po-cut-glow: hotpink;
+  --po-tear-line: 0.12;
+}
+```
+
+## Tokens du composant
+
+<table>
+  <thead><tr><th>Variable</th><th>Valeur (light)</th><th>Dark</th><th>Description</th></tr></thead>
+  <tbody>
+    {tokens.filter((t) => t.layer === 'component').map((t) => (
+      <tr key={t.name}>
+        <td><code>{t.name}</code></td>
+        <td><code>{typeof t.value === 'string' ? t.value : JSON.stringify(t.value)}</code></td>
+        <td>{t.dark !== undefined ? <code>{typeof t.dark === 'string' ? t.dark : JSON.stringify(t.dark)}</code> : '—'}</td>
+        <td>{t.description}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+## Tokens sémantiques
+
+<table>
+  <thead><tr><th>Variable</th><th>Light</th><th>Dark</th><th>Description</th></tr></thead>
+  <tbody>
+    {tokens.filter((t) => t.layer === 'semantic').map((t) => (
+      <tr key={t.name}>
+        <td><code>{t.name}</code></td>
+        <td><code>{String(t.value)}</code></td>
+        <td><code>{String(t.dark ?? t.value)}</code></td>
+        <td>{t.description}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>

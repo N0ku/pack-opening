@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="fr" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>pack-opening · HTML pur</title>
+    <!-- Projet HTML/CSS/JS classique : une feuille de style et un script, sans build. -->
+    <link rel="stylesheet" href="../../dist/css/index.css" />
+    <script src="../../dist/pack-opening.iife.js"></script>
+    <!-- Effets magiques (optionnels) : anime.js est inclus dans ce script. -->
+    <link rel="stylesheet" href="../../dist/css/magic.css" />
+    <script src="../../dist/pack-opening-magic.iife.js"></script>
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        gap: 24px;
+        padding: 24px 16px;
+        box-sizing: border-box;
+        overflow-x: hidden;
+        background: var(--po-color-neutral-950);
+        color: var(--po-color-content-primary);
+        font-family: system-ui, sans-serif;
+      }
+
+      /* Personnalisation par tokens : aucune règle interne à surcharger. */
+      pack-opening {
+        --po-cut-glow: var(--po-color-cyan-300);
+        --po-burst-color: var(--po-color-cyan-300);
+      }
+    </style>
+  </head>
+  <body>
+    <pack-opening card-back="../../demo/assets/back.svg" disable="haptics" fx-color="#6fd8ff #b968ff">
+      <img data-pack src="../../demo/assets/booster.svg" alt="Booster Stellar" />
+      <img data-card data-value="c1" src="../../demo/assets/card-1.svg" alt="Flammèche" />
+      <img data-card data-value="c3" data-rarity="rare" src="../../demo/assets/card-3.svg" alt="Voltix" />
+      <img data-card data-value="c5" data-rarity="legendary" src="../../demo/assets/card-5.svg" alt="Astralis" />
+    </pack-opening>
+
+    <output id="result" aria-live="off"></output>
+
+    <script>
+      const pack = document.querySelector('pack-opening');
+      pack.addEventListener('po-card-reveal', (event) => {
+        console.log('Carte révélée :', event.detail.name, event.detail.rarity, event.detail.value);
+      });
+      pack.addEventListener('po-complete', () => {
+        document.getElementById('result').textContent = 'Booster terminé !';
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,129 @@
+{
+  "name": "pack-opening",
+  "version": "0.3.0",
+  "description": "Design system pour animer l'ouverture de boosters de cartes : Web Component, wrappers React et Vue, modes auto et headless, effets magiques à particules (anime.js), tokens DTCG, accessible.",
+  "keywords": [
+    "web-component",
+    "custom-element",
+    "design-system",
+    "design-tokens",
+    "dtcg",
+    "react",
+    "vue",
+    "animation",
+    "particles",
+    "anime",
+    "booster",
+    "pack-opening",
+    "tcg",
+    "a11y"
+  ],
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "customElements": "custom-elements.json",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./react": {
+      "types": "./dist/react/index.d.ts",
+      "import": "./dist/react.js"
+    },
+    "./vue": {
+      "types": "./dist/vue/index.d.ts",
+      "import": "./dist/vue.js"
+    },
+    "./magic": {
+      "types": "./dist/magic/index.d.ts",
+      "import": "./dist/magic.js"
+    },
+    "./css/*": "./dist/css/*",
+    "./tokens/*": {
+      "types": "./dist/tokens/*.d.ts",
+      "import": "./dist/tokens/*.js"
+    },
+    "./tokens.json": "./dist/tokens.json",
+    "./custom-elements.json": "./dist/custom-elements.json",
+    "./iife": "./dist/pack-opening.iife.js",
+    "./magic/iife": "./dist/pack-opening-magic.iife.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "tokens"
+  ],
+  "sideEffects": [
+    "**/*.css",
+    "./src/index.ts",
+    "./src/react/index.ts",
+    "./src/vue/index.ts",
+    "./src/magic/index.ts",
+    "./dist/index.js",
+    "./dist/react.js",
+    "./dist/vue.js",
+    "./dist/magic.js",
+    "./dist/pack-opening.iife.js",
+    "./dist/pack-opening-magic.iife.js"
+  ],
+  "scripts": {
+    "tokens": "node scripts/build-tokens.mjs",
+    "cem": "cem analyze --config custom-elements-manifest.config.mjs",
+    "predev": "npm run tokens",
+    "dev": "vite",
+    "storybook": "npm run tokens && npm run cem && storybook dev -p 6006 --ci",
+    "build-storybook": "npm run tokens && npm run cem && storybook build",
+    "build": "vite build && vite build --mode iife && vite build --mode iife-magic && npm run tokens -- --dist && node scripts/build-css.mjs && tsc -p tsconfig.build.json && npm run cem && cp custom-elements.json src/styles/generated/tokens.json dist/",
+    "test": "vitest run --project unit",
+    "test:browser": "vitest run --project browser",
+    "test:stories": "npm run tokens && npm run cem && vitest run --project stories",
+    "test:all": "npm run lint:css && npm run typecheck && vitest run",
+    "typecheck": "tsc --noEmit",
+    "lint:css": "node scripts/lint-hardcoded.mjs",
+    "check": "publint && attw --pack . --profile esm-only --exclude-entrypoints ./iife ./magic/iife"
+  },
+  "peerDependencies": {
+    "animejs": "^4.0.0",
+    "react": ">=18",
+    "vue": ">=3.4"
+  },
+  "peerDependenciesMeta": {
+    "animejs": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    },
+    "vue": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.5",
+    "@custom-elements-manifest/analyzer": "^0.11.0",
+    "@storybook/addon-a11y": "^10.6.2",
+    "@storybook/addon-docs": "^10.6.2",
+    "@storybook/addon-vitest": "^10.6.2",
+    "@storybook/web-components-vite": "^10.6.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitest/browser-playwright": "^5.0.5",
+    "animejs": "^4.5.0",
+    "custom-element-vs-code-integration": "^1.5.0",
+    "lightningcss": "^1.33.0",
+    "lit": "^3.3.3",
+    "playwright": "^1.64.1",
+    "publint": "^0.3.25",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "remark-gfm": "^4.0.1",
+    "storybook": "^10.6.2",
+    "style-dictionary": "^5.6.1",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.4",
+    "vitest": "^5.0.4",
+    "vue": "^3.5.44"
+  }
+}

@@ -1,0 +1,8 @@
+node_modules
+dist
+storybook-static
+custom-elements.json
+src/styles/generated
+.DS_Store
+.vitest-attachments
+__screenshots__

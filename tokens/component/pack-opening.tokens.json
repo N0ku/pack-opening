@@ -1,0 +1,759 @@
+{
+  "pack": {
+    "width": {
+      "$value": "{size.pack}",
+      "$type": "dimension",
+      "$description": "Width of the booster."
+    },
+    "radius": {
+      "$value": "{radius.sm}",
+      "$type": "dimension",
+      "$description": "Corner radius of the booster."
+    }
+  },
+  "tear": {
+    "line": {
+      "$value": 0.14,
+      "$type": "number",
+      "$description": "Height of the strip that gets torn off, as a fraction of the pack height."
+    },
+    "zone": {
+      "$value": 0.26,
+      "$type": "number",
+      "$description": "Height of the grab area around the tear line, as a fraction of the pack height."
+    },
+    "overflow": {
+      "$value": 0.14,
+      "$type": "number",
+      "$description": "How far the grab area extends past each side of the pack, as a fraction of its width."
+    }
+  },
+  "cut": {
+    "color": {
+      "$value": "{color.highlight.core}",
+      "$type": "color",
+      "$description": "Core of the glowing cut line."
+    },
+    "glow": {
+      "$value": "{color.glow.default}",
+      "$type": "color",
+      "$description": "Halo of the cut line, the flash and the sparks."
+    },
+    "size": {
+      "$value": "{size.stroke}",
+      "$type": "dimension"
+    },
+    "tip-size": {
+      "$value": "{size.knob}",
+      "$type": "dimension"
+    },
+    "shadow": {
+      "$type": "shadow",
+      "$value": [
+        {
+          "color": "{color.glow.default}",
+          "offsetX": "0px",
+          "offsetY": "0px",
+          "blur": "6px",
+          "spread": "1px"
+        },
+        {
+          "color": "{color.glow.default}",
+          "offsetX": "0px",
+          "offsetY": "0px",
+          "blur": "18px",
+          "spread": "4px"
+        }
+      ]
+    }
+  },
+  "hint": {
+    "color": {
+      "$value": "{color.highlight.line}",
+      "$type": "color",
+      "$description": "Dashed line on the sealed pack."
+    },
+    "size": {
+      "$value": "{size.hairline}",
+      "$type": "dimension"
+    },
+    "label-color": {
+      "$value": "{color.content.secondary}",
+      "$type": "color",
+      "$description": "Instruction text under the pack."
+    },
+    "label-size": {
+      "$value": "{font.size.label}",
+      "$type": "dimension"
+    },
+    "label-weight": {
+      "$value": "{font.weight.label}",
+      "$type": "fontWeight"
+    },
+    "label-gap": {
+      "$value": "{space.500}",
+      "$type": "dimension"
+    },
+    "label-space": {
+      "$value": "{space.1200}",
+      "$type": "dimension",
+      "$description": "Room kept under the pack for the instruction text."
+    },
+    "inset": {
+      "$value": 0.04,
+      "$type": "number",
+      "$description": "Horizontal inset of the dashed line, as a fraction of the pack width."
+    }
+  },
+  "shine": {
+    "color": {
+      "$value": "{color.highlight.strong}",
+      "$type": "color"
+    },
+    "sheen": {
+      "$value": "{color.highlight.soft}",
+      "$type": "color"
+    },
+    "opacity": {
+      "$value": 0.55,
+      "$type": "number",
+      "$description": "Strength of the foil reflection (0 turns it off visually)."
+    }
+  },
+  "spark": {
+    "size": {
+      "$value": "{size.dot}",
+      "$type": "dimension"
+    },
+    "color": {
+      "$value": "{color.highlight.core}",
+      "$type": "color"
+    },
+    "count": {
+      "$value": 14,
+      "$type": "number",
+      "$description": "Number of sparks when the strip is torn off."
+    },
+    "shadow": {
+      "$type": "shadow",
+      "$value": {
+        "color": "{color.glow.default}",
+        "offsetX": "0px",
+        "offsetY": "0px",
+        "blur": "6px",
+        "spread": "2px"
+      }
+    }
+  },
+  "card": {
+    "width-ratio": {
+      "$value": 0.86,
+      "$type": "number",
+      "$description": "Card width relative to the pack width."
+    },
+    "ratio": {
+      "$value": 0.7159,
+      "$type": "number",
+      "$description": "Card aspect ratio (63 / 88 by default)."
+    },
+    "radius": {
+      "$value": "{radius.md}",
+      "$type": "dimension"
+    },
+    "shadow": {
+      "$type": "shadow",
+      "$value": {
+        "color": "{color.shadow.soft}",
+        "offsetX": "0px",
+        "offsetY": "12px",
+        "blur": "30px",
+        "spread": "0px"
+      }
+    },
+    "glow-rare": {
+      "$value": "{color.rarity.rare}",
+      "$type": "color"
+    },
+    "glow-epic": {
+      "$value": "{color.rarity.epic}",
+      "$type": "color"
+    },
+    "glow-legendary": {
+      "$value": "{color.rarity.legendary}",
+      "$type": "color"
+    },
+    "glow-default": {
+      "$value": "{color.glow.default}",
+      "$type": "color",
+      "$description": "Glow of cards with a custom rarity."
+    },
+    "holo-1": {
+      "$value": "{color.holo.pink}",
+      "$type": "color"
+    },
+    "holo-2": {
+      "$value": "{color.holo.lilac}",
+      "$type": "color"
+    },
+    "holo-3": {
+      "$value": "{color.holo.sky}",
+      "$type": "color"
+    },
+    "holo-4": {
+      "$value": "{color.holo.mint}",
+      "$type": "color"
+    },
+    "holo-5": {
+      "$value": "{color.holo.sun}",
+      "$type": "color"
+    },
+    "holo-shine": {
+      "$value": "{color.highlight.strong}",
+      "$type": "color"
+    },
+    "glow-ring": {
+      "$value": "2px",
+      "$type": "dimension"
+    },
+    "glow-blur": {
+      "$value": "32px",
+      "$type": "dimension"
+    },
+    "glow-spread": {
+      "$value": "6px",
+      "$type": "dimension"
+    },
+    "drag-rotation": {
+      "$value": 12,
+      "$type": "number",
+      "$description": "Rotation of a card dragged by its full width, in degrees."
+    }
+  },
+  "stack": {
+    "offset": {
+      "$value": "{space.200}",
+      "$type": "dimension",
+      "$description": "Vertical offset of each card under the top one."
+    },
+    "scale-step": {
+      "$value": 0.02,
+      "$type": "number"
+    },
+    "depth": {
+      "$value": 4,
+      "$type": "number",
+      "$description": "How many cards stay visible under the top one."
+    }
+  },
+  "summary": {
+    "card-ratio": {
+      "$value": 0.48,
+      "$type": "number",
+      "$description": "Card width in the summary, relative to a card in the stack."
+    },
+    "gap": {
+      "$value": "{space.300}",
+      "$type": "dimension"
+    },
+    "columns": {
+      "$value": 5,
+      "$type": "number"
+    },
+    "enter-offset": {
+      "$value": "18px",
+      "$type": "dimension"
+    }
+  },
+  "focus": {
+    "color": {
+      "$value": "{color.focus.ring}",
+      "$type": "color"
+    },
+    "width": {
+      "$value": "{size.hairline}",
+      "$type": "dimension"
+    },
+    "offset": {
+      "$value": "{space.200}",
+      "$type": "dimension"
+    },
+    "radius": {
+      "$value": "{radius.sm}",
+      "$type": "dimension"
+    }
+  },
+  "skip": {
+    "background": {
+      "$value": "{color.control.background}",
+      "$type": "color"
+    },
+    "background-hover": {
+      "$value": "{color.control.background-hover}",
+      "$type": "color"
+    },
+    "color": {
+      "$value": "{color.control.text}",
+      "$type": "color"
+    },
+    "border": {
+      "$value": "{color.control.border}",
+      "$type": "color"
+    },
+    "radius": {
+      "$value": "{radius.full}",
+      "$type": "dimension"
+    },
+    "padding-x": {
+      "$value": "{space.400}",
+      "$type": "dimension"
+    },
+    "padding-y": {
+      "$value": "{space.200}",
+      "$type": "dimension"
+    },
+    "min-height": {
+      "$value": "{size.target}",
+      "$type": "dimension",
+      "$description": "Minimum target size of the skip button (WCAG 2.5.8)."
+    },
+    "gap": {
+      "$value": "{space.600}",
+      "$type": "dimension"
+    },
+    "font-size": {
+      "$value": "{font.size.label}",
+      "$type": "dimension"
+    },
+    "font-weight": {
+      "$value": "{font.weight.label}",
+      "$type": "fontWeight"
+    }
+  },
+  "typography": {
+    "family": {
+      "$value": "{font.family.base}",
+      "$type": "fontFamily",
+      "$description": "Font of the instruction text and the skip button."
+    }
+  },
+  "motion": {
+    "cut": {
+      "$value": "{duration.fast}",
+      "$type": "duration",
+      "$description": "Finishing the cut after a successful swipe."
+    },
+    "auto-cut": {
+      "$value": "{duration.moderate}",
+      "$type": "duration",
+      "$description": "Cut played by open() or a tap."
+    },
+    "cancel": {
+      "$value": "{duration.snappy}",
+      "$type": "duration",
+      "$description": "Pack closing back after an incomplete swipe."
+    },
+    "tear-off": {
+      "$value": "{duration.slow}",
+      "$type": "duration"
+    },
+    "peek-delay": {
+      "$value": "{duration.quick}",
+      "$type": "duration"
+    },
+    "peek": {
+      "$value": "{duration.moderate}",
+      "$type": "duration"
+    },
+    "settle": {
+      "$value": "{duration.slow}",
+      "$type": "duration"
+    },
+    "burst": {
+      "$value": "{duration.slower}",
+      "$type": "duration"
+    },
+    "spark": {
+      "$value": "{duration.slow}",
+      "$type": "duration"
+    },
+    "tilt": {
+      "$value": "{duration.base}",
+      "$type": "duration"
+    },
+    "hover": {
+      "$value": "{duration.fast}",
+      "$type": "duration"
+    },
+    "fade": {
+      "$value": "{duration.snappy}",
+      "$type": "duration"
+    },
+    "flip": {
+      "$value": "{duration.relaxed}",
+      "$type": "duration"
+    },
+    "stack": {
+      "$value": "{duration.snappy}",
+      "$type": "duration"
+    },
+    "card-leave": {
+      "$value": "{duration.base}",
+      "$type": "duration"
+    },
+    "card-return": {
+      "$value": "{duration.snappy}",
+      "$type": "duration"
+    },
+    "summary-in": {
+      "$value": "{duration.base}",
+      "$type": "duration"
+    },
+    "summary-stagger": {
+      "$value": "70ms",
+      "$type": "duration"
+    },
+    "rare-burst": {
+      "$value": "{duration.slower}",
+      "$type": "duration"
+    },
+    "holo": {
+      "$value": "{duration.long}",
+      "$type": "duration"
+    },
+    "holo-loop": {
+      "$value": "{duration.ambient}",
+      "$type": "duration"
+    },
+    "hint-sweep": {
+      "$value": "{duration.loop}",
+      "$type": "duration"
+    },
+    "ease-standard": {
+      "$value": "{easing.standard}",
+      "$type": "cubicBezier"
+    },
+    "ease-fly": {
+      "$value": "{easing.fly}",
+      "$type": "cubicBezier"
+    },
+    "ease-settle": {
+      "$value": "{easing.decelerate}",
+      "$type": "cubicBezier"
+    },
+    "ease-leave": {
+      "$value": "{easing.accelerate}",
+      "$type": "cubicBezier"
+    },
+    "ease-spring": {
+      "$value": "{easing.spring}",
+      "$type": "cubicBezier"
+    },
+    "ease-bounce": {
+      "$value": "{easing.bounce}",
+      "$type": "cubicBezier"
+    },
+    "ease-in-out": {
+      "$value": "{easing.in-out}",
+      "$type": "cubicBezier"
+    },
+    "deck": {
+      "$value": "{duration.snappy}",
+      "$type": "duration",
+      "$description": "Deck edge getting thinner when a card leaves."
+    },
+    "fx-appear": {
+      "$value": "{duration.long}",
+      "$type": "duration",
+      "$description": "Magic circle of the summoning."
+    },
+    "fx-converge": {
+      "$value": "{duration.slower}",
+      "$type": "duration",
+      "$description": "Particles flying toward the pack."
+    },
+    "fx-materialize-delay": {
+      "$value": "{duration.moderate}",
+      "$type": "duration",
+      "$description": "Delay before the pack starts to materialise."
+    },
+    "fx-materialize": {
+      "$value": "{duration.relaxed}",
+      "$type": "duration",
+      "$description": "Pack materialising."
+    },
+    "fx-aura": {
+      "$value": "{duration.ambient}",
+      "$type": "duration",
+      "$description": "Life of a firefly."
+    },
+    "fx-trail": {
+      "$value": "{duration.slow}",
+      "$type": "duration",
+      "$description": "Life of a stardust particle."
+    },
+    "fx-nova": {
+      "$value": "{duration.long}",
+      "$type": "duration",
+      "$description": "Flight of the stars and shockwaves."
+    },
+    "fx-dissolve": {
+      "$value": "{duration.slower}",
+      "$type": "duration",
+      "$description": "Flight of the particles of the dissolving pack."
+    },
+    "fx-veil": {
+      "$value": "{duration.slow}",
+      "$type": "duration",
+      "$description": "Veil of light around the cards coming out."
+    },
+    "fx-glimmer": {
+      "$value": "{duration.slower}",
+      "$type": "duration",
+      "$description": "Burst around a revealed card."
+    },
+    "fx-wake": {
+      "$value": "{duration.relaxed}",
+      "$type": "duration",
+      "$description": "Life of a particle behind a card sent away."
+    },
+    "fx-shimmer": {
+      "$value": "{duration.long}",
+      "$type": "duration",
+      "$description": "Glittering wave over a card of the summary."
+    }
+  },
+  "tilt": {
+    "x": {
+      "$value": 12,
+      "$type": "number",
+      "$description": "Maximum tilt around the horizontal axis, in degrees."
+    },
+    "y": {
+      "$value": 16,
+      "$type": "number",
+      "$description": "Maximum tilt around the vertical axis, in degrees."
+    }
+  },
+  "view": {
+    "perspective": {
+      "$value": "1200px",
+      "$type": "dimension",
+      "$description": "Distance of the viewer, for the `view` angle, the tilt, the 3D edges and the card flip."
+    }
+  },
+  "peel": {
+    "lift": {
+      "$value": "3px",
+      "$type": "dimension",
+      "$description": "How much the strip lifts while being torn."
+    },
+    "angle": {
+      "$value": 4,
+      "$type": "number",
+      "$description": "How much the strip rotates while being torn, in degrees."
+    }
+  },
+  "burst": {
+    "size": {
+      "$value": 1.7,
+      "$type": "number",
+      "$description": "Diameter of the flash, relative to the pack width."
+    },
+    "color": {
+      "$value": "{color.glow.default}",
+      "$type": "color"
+    },
+    "core": {
+      "$value": "{color.highlight.core}",
+      "$type": "color"
+    }
+  },
+  "depth": {
+    "thickness": {
+      "$value": "14px",
+      "$type": "dimension",
+      "$description": "Thickness of the sealed pack."
+    },
+    "card": {
+      "$value": "3px",
+      "$type": "dimension",
+      "$description": "Thickness of one card in the deck edge."
+    },
+    "deck-max": {
+      "$value": "30px",
+      "$type": "dimension",
+      "$description": "Maximum thickness of the deck edge."
+    },
+    "pack-side": {
+      "$value": "{color.neutral.800}",
+      "$type": "color",
+      "$description": "Sides of the pack when the booster is not an image."
+    },
+    "shade": {
+      "$value": "{color.alpha.black-35}",
+      "$type": "color",
+      "$description": "Shadow on the sides of the pack."
+    },
+    "highlight": {
+      "$value": "{color.highlight.soft}",
+      "$type": "color",
+      "$description": "Light on the edge of the sides."
+    },
+    "edge-light": {
+      "$value": "{color.neutral.0}",
+      "$type": "color",
+      "$description": "Card edges in the deck (paper)."
+    },
+    "edge-dark": {
+      "$value": "{color.neutral.200}",
+      "$type": "color",
+      "$description": "Lines between the card edges."
+    },
+    "shadow-y": {
+      "$value": "14px",
+      "$type": "dimension",
+      "$description": "Vertical offset of the shadow under the 3D pack and deck."
+    },
+    "shadow-blur": {
+      "$value": "18px",
+      "$type": "dimension"
+    },
+    "shadow-color": {
+      "$value": "{color.shadow.soft}",
+      "$type": "color"
+    }
+  },
+  "fx": {
+    "color": {
+      "$value": "{color.magic.default}",
+      "$type": "color",
+      "$description": "Colour of every magic effect. The fx-color attribute and the fxColor / fxColors options override it."
+    },
+    "particle-size": {
+      "$value": "10px",
+      "$type": "dimension",
+      "$description": "Base diameter of a particle."
+    },
+    "bleed": {
+      "$value": "96px",
+      "$type": "dimension",
+      "$description": "How far the particle canvas reaches above and below the component."
+    },
+    "max-particles": {
+      "$value": 600,
+      "$type": "number",
+      "$description": "Particles alive at once, per component."
+    },
+    "appear": {
+      "color": {
+        "$value": "{fx.color}",
+        "$type": "color",
+        "$description": "Magic circle and converging particles."
+      },
+      "count": {
+        "$value": 56,
+        "$type": "number",
+        "$description": "Particles converging toward the pack."
+      },
+      "circle-size": {
+        "$value": 1.9,
+        "$type": "number",
+        "$description": "Diameter of the magic circle, relative to the pack width."
+      },
+      "blur": {
+        "$value": "14px",
+        "$type": "dimension",
+        "$description": "Blur of the pack when it starts to materialise."
+      }
+    },
+    "aura": {
+      "color": {
+        "$value": "{fx.color}",
+        "$type": "color",
+        "$description": "Fireflies around the sealed pack."
+      },
+      "count": {
+        "$value": 14,
+        "$type": "number",
+        "$description": "Fireflies alive at once."
+      }
+    },
+    "trail": {
+      "color": {
+        "$value": "{fx.color}",
+        "$type": "color",
+        "$description": "Stardust behind the tip of the cut."
+      },
+      "density": {
+        "$value": 0.35,
+        "$type": "number",
+        "$description": "Particles per pixel travelled by the tip."
+      }
+    },
+    "nova": {
+      "color": {
+        "$value": "{fx.color}",
+        "$type": "color",
+        "$description": "Shockwaves and stars when the strip is torn off."
+      },
+      "count": {
+        "$value": 60,
+        "$type": "number",
+        "$description": "Stars in the shower."
+      }
+    },
+    "dissolve": {
+      "color": {
+        "$value": "{fx.color}",
+        "$type": "color",
+        "$description": "Particles of the dissolving pack and veil around the cards."
+      },
+      "count": {
+        "$value": 110,
+        "$type": "number",
+        "$description": "Particles the empty pack dissolves into."
+      }
+    },
+    "glimmer": {
+      "color": {
+        "$value": "{fx.color}",
+        "$type": "color",
+        "$description": "Burst around a revealed card, when it has no rarity colour."
+      },
+      "count": {
+        "$value": 30,
+        "$type": "number",
+        "$description": "Particles around a revealed card."
+      },
+      "legendary-boost": {
+        "$value": 2,
+        "$type": "number",
+        "$description": "Multiplier of the burst for legendary cards."
+      }
+    },
+    "wake": {
+      "color": {
+        "$value": "{fx.color}",
+        "$type": "color",
+        "$description": "Trail behind a card sent away, when it has no rarity colour."
+      },
+      "density": {
+        "$value": 0.25,
+        "$type": "number",
+        "$description": "Particles per pixel travelled by the card."
+      }
+    },
+    "shimmer": {
+      "color": {
+        "$value": "{fx.color}",
+        "$type": "color",
+        "$description": "Glittering wave over the summary."
+      },
+      "count": {
+        "$value": 12,
+        "$type": "number",
+        "$description": "Glitters per card."
+      }
+    }
+  }
+}

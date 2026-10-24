@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 630 880" width="630" height="880">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe14d"/><stop offset="1" stop-color="#d99a00"/></linearGradient>
+    <radialGradient id="art" cx=".5" cy=".45" r=".7"><stop offset="0" stop-color="#ffffff" stop-opacity=".95"/><stop offset=".45" stop-color="#ffe14d"/><stop offset="1" stop-color="#d99a00"/></radialGradient>
+  </defs>
+  <rect width="630" height="880" rx="36" fill="#bfe6ff"/>
+  <rect x="22" y="22" width="586" height="836" rx="24" fill="url(#bg)"/>
+  <text x="54" y="92" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-weight="800" font-size="46" fill="#fff">Voltix</text>
+  <text x="576" y="92" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-weight="800" font-size="34" fill="#fff">90 PV</text>
+  <rect x="54" y="122" width="522" height="380" rx="14" fill="url(#art)" stroke="#fff" stroke-opacity=".8" stroke-width="6"/>
+  <g transform="translate(315 312)">
+    <circle r="150" fill="#fff" opacity=".18"/>
+    <path d="M30 -130 L-70 15 L-5 15 L-35 130 L75 -25 L10 -25 Z" fill="#fff" stroke="#d99a00" stroke-width="8" stroke-linejoin="round"/>
+  </g>
+  <rect x="54" y="522" width="522" height="46" rx="23" fill="#000" fill-opacity=".25"/>
+  <text x="315" y="554" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-weight="700" font-size="24" letter-spacing="3" fill="#fff">TYPE FOUDRE</text>
+  <rect x="54" y="590" width="522" height="190" rx="14" fill="#fff" fill-opacity=".9"/>
+  <text x="80" y="640" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-weight="800" font-size="30" fill="#222">Attaque stellaire</text>
+  <text x="550" y="640" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-weight="800" font-size="30" fill="#222">55</text>
+  <rect x="80" y="668" width="440" height="10" rx="5" fill="#222" opacity=".15"/>
+  <rect x="80" y="696" width="380" height="10" rx="5" fill="#222" opacity=".15"/>
+  <rect x="80" y="724" width="300" height="10" rx="5" fill="#222" opacity=".15"/>
+  <text x="576" y="830" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="34" fill="#fff">★★</text>
+  <text x="54" y="830" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-weight="600" font-size="22" fill="#fff" opacity=".8">3/5 · rare</text>
+</svg>

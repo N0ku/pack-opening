@@ -1,0 +1,110 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Magic/Guide" />
+
+# Effets magiques
+
+Des animations translucides à particules, en plus de la chorégraphie de base : l’apparition du booster, une aura,
+une traînée sur la découpe, l’ouverture, les transitions et les cartes. Les particules sont dessinées dans un canvas
+en mode additif et animées par [anime.js](https://animejs.com) (v4). Les calques DOM (cercle magique,
+matérialisation, dissolution, voile, reflet) sont en CSS dans `magic.css`, réglés par des tokens.
+
+Tout est optionnel : sans `pack-opening/magic`, le cœur reste sans dépendance et rien ne change.
+
+## Installer
+
+```bash
+npm install pack-opening animejs
+```
+
+```js
+import 'pack-opening';
+import 'pack-opening/magic';          // enregistre les effets pour tous les <pack-opening>
+import 'pack-opening/css/index.css';
+import 'pack-opening/css/magic.css';
+```
+
+Sans build, le script magic inclut anime.js :
+
+```html
+<link rel="stylesheet" href="pack-opening/css/index.css" />
+<link rel="stylesheet" href="pack-opening/css/magic.css" />
+<script src="pack-opening/pack-opening.iife.js"></script>
+<script src="pack-opening/pack-opening-magic.iife.js"></script>
+```
+
+## Les effets
+
+Ce sont des features comme les autres : dans le preset `full`, absentes de `minimal`, et à activer ou couper avec
+`enable` / `disable`. Elles sont toutes coupées avec `prefers-reduced-motion` ou `motion="reduce"`.
+
+| Feature | Moment | Rendu |
+| --- | --- | --- |
+| `appear` | le booster entre dans l’écran (et après `reset()`) | cercle magique, particules qui convergent vers sa silhouette, matérialisation |
+| `aura` | booster scellé, visible | lucioles qui dérivent et scintillent |
+| `trail` | swipe, `open()`, fin de la découpe | poussière d’étoiles le long de la pointe |
+| `nova` | arrachage de la bande | deux ondes de choc translucides, gerbe d’étoiles |
+| `dissolve` | le booster vide s’efface | désintégration de bas en haut, cartes qui sortent d’un voile lumineux |
+| `glimmer` | une carte est révélée | éclat sur son contour, plus fort pour `legendary` |
+| `wake` | une carte part | traînée derrière son bord arrière |
+| `shimmer` | résumé | vague scintillante et reflet sur chaque carte |
+
+Tant que le booster n’a pas été vu, `appear` le garde invisible (il reste focusable). Un swipe ou `open()` avant
+cela saute l’apparition.
+
+## Couleurs
+
+Chaque effet a sa couleur. Une valeur peut être une couleur CSS ou une liste : chaque particule en prend une.
+
+```html
+<pack-opening fx-color="#b968ff #6fd8ff">…</pack-opening>
+```
+
+```js
+el.options = { fxColor: ['#b968ff', '#6fd8ff'], fxColors: { nova: ['gold', 'white'], trail: 'hotpink' } };
+```
+
+```tsx
+<PackOpening fxColor="#b968ff" fxColors={{ nova: ['gold', 'white'] }} pack={…}>…</PackOpening>
+```
+
+Priorité : `fxColors.<effet>` → `fxColor` / `fx-color` → token `--po-fx-<effet>-color` → `--po-fx-color`.
+Pour `glimmer` et `wake`, la couleur de rareté de la carte (`--po-card-glow`) passe juste après `fxColors.<effet>`.
+
+Les tokens se surchargent aussi en CSS :
+
+```css
+pack-opening {
+  --po-fx-color: hotpink;          /* tous les effets */
+  --po-fx-nova-count: 90;          /* plus d’étoiles */
+  --po-fx-particle-size: 12px;
+  --po-motion-fx-aura: 5s;         /* lucioles plus lentes */
+}
+```
+
+## Headless
+
+Ajoutez `<canvas data-part="fx" aria-hidden="true"></canvas>` à la racine du composant. Sans lui, les particules
+sont coupées (un avertissement s’affiche), mais les calques CSS restent.
+
+## Écrire ses propres effets
+
+`registerEffect` branche n’importe quel code sur la chorégraphie. Une promesse renvoyée par `phase` est attendue
+avec les animations CSS de l’étape.
+
+```js
+import { registerEffect } from 'pack-opening';
+
+registerEffect('confetti', (host) => ({
+  phase(phase) {
+    if (phase === 'open') return launchConfetti(host.parts.pack); // attendu, comme une animation CSS
+  },
+  reveal(card, info, silent) {
+    if (!silent && info.rarity === 'legendary') playSound();
+  },
+  destroy() {},
+}));
+```
+
+Hooks : `update`, `state`, `phase` (`appear`, `auto-cut`, `cut`, `cancel`, `open`, `settle`), `flip`, `reveal`,
+`leave`, `complete`, `destroy`. Un effet qui lève une erreur est signalé une fois et ignoré : l’ouverture continue.

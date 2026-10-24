@@ -1,0 +1,6 @@
+/* pack-opening — everything: tokens, mechanics and default theme. */
+@layer po.tokens, po.base, po.theme;
+
+@import './generated/tokens.css';
+@import './base.css';
+@import './theme.css';

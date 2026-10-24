@@ -1,0 +1,109 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Installation" />
+
+# Installation
+
+Choisissez la façon d’intégrer qui convient à votre projet. Toutes utilisent le même moteur et les mêmes tokens.
+
+## 1. HTML / CSS / JS sans build (CDN ou fichiers copiés)
+
+```html
+<link rel="stylesheet" href="pack-opening/css/index.css" />
+<script src="pack-opening/pack-opening.iife.js"></script>
+
+<pack-opening card-back="img/dos.png" disable="haptics">
+  <img data-pack src="img/booster.png" alt="Booster série 1" />
+  <img data-card src="img/carte-1.png" alt="Flammèche" />
+  <img data-card src="img/carte-2.png" alt="Voltix" data-rarity="rare" />
+</pack-opening>
+```
+
+## 2. npm + bundler (Vite, webpack…)
+
+```bash
+npm install pack-opening
+```
+
+```js
+import 'pack-opening';                 // enregistre <pack-opening>
+import 'pack-opening/css/index.css';  // tokens + base + thème
+```
+
+Les styles existent aussi séparément, pour remplacer le thème par le vôtre :
+
+```js
+import 'pack-opening/css/tokens.css'; // variables --po-* (light / dark)
+import 'pack-opening/css/base.css';   // mécanique, obligatoire
+// pas de theme.css : vous écrivez le vôtre
+```
+
+## 3. React (18 et 19)
+
+```tsx
+import { PackOpening, PackCard, type PackOpeningHandle } from 'pack-opening/react';
+import 'pack-opening/css/index.css';
+
+export function Booster() {
+  const ref = useRef<PackOpeningHandle>(null);
+  return (
+    <PackOpening
+      ref={ref}
+      pack={<img src="/booster.png" alt="" />}
+      cardBack="/dos.png"
+      preset="full"
+      disable={['sparks', 'haptics']}
+      onCardReveal={(card) => console.log(card.name, card.rarity, card.value)}
+      onComplete={({ cards }) => save(cards)}
+    >
+      <PackCard rarity="rare" value="voltix"><img src="/c1.png" alt="Voltix" /></PackCard>
+      <PackCard value="aquari"><img src="/c2.png" alt="Aquari" /></PackCard>
+    </PackOpening>
+  );
+}
+```
+
+`ref.current.open()`, `next()`, `revealAll()`, `reset()` et `state` sont disponibles. Les noms de features passés
+à `enable` / `disable` sont typés.
+
+## 4. Vue 3
+
+```vue
+<script setup lang="ts">
+import { PackOpening, PackCard } from 'pack-opening/vue';
+import 'pack-opening/css/index.css';
+</script>
+
+<template>
+  <PackOpening card-back="/dos.png" preset="minimal" :enable="['burst', 'rarity']" @card-reveal="(card) => log(card)">
+    <template #pack><img src="/booster.png" alt="" /></template>
+    <PackCard rarity="legendary" value="astralis"><img src="/c5.png" alt="Astralis" /></PackCard>
+  </PackOpening>
+</template>
+```
+
+## 5. Effets magiques (optionnel)
+
+```bash
+npm install animejs
+```
+
+```js
+import 'pack-opening/magic';          // particules animées par anime.js, pour tous les <pack-opening>
+import 'pack-opening/css/magic.css';
+```
+
+Sans build : `pack-opening-magic.iife.js` (anime.js inclus) et `css/magic.css`. Voir le guide **Magic**.
+
+## Autocomplétion dans l’éditeur
+
+Le paquet fournit `custom-elements.json` ainsi que les données VS Code `vscode.html-custom-data.json` et
+`vscode.css-custom-data.json` (attributs, valeurs des presets, tokens `--po-*`). Pour en profiter dans VS Code :
+
+```json
+// .vscode/settings.json
+{
+  "html.customData": ["./node_modules/pack-opening/dist/vscode.html-custom-data.json"],
+  "css.customData": ["./node_modules/pack-opening/dist/vscode.css-custom-data.json"]
+}
+```

@@ -1,0 +1,46 @@
+import { Meta, Canvas, Source } from '@storybook/addon-docs/blocks';
+import * as HeadlessStories from './Headless.stories';
+
+<Meta of={HeadlessStories} />
+
+# Mode headless
+
+Avec `mode="headless"`, **vous écrivez le markup** et le composant n’y ajoute que du comportement. Il ne crée et
+ne déplace aucun nœud, sauf les étincelles (dans `effects`) et la région d’annonce si vous n’en fournissez pas.
+C’est ce mode qu’utilisent les wrappers React et Vue.
+
+<Canvas of={HeadlessStories.OwnMarkup} />
+
+## Parts
+
+| Part | Obligatoire | Rôle |
+| --- | --- | --- |
+| `stage` | ✓ | Superpose le paquet et les cartes. |
+| `pack` | ✓ | Le booster. Les gestes et les variables `--po-progress` / `--po-cut-*` sont sur lui. |
+| `pack-body` | ✓ | Le corps du booster (découpé sous la ligne). |
+| `pack-top` | ✓ | Une copie du booster pour la bande arrachée. Mettez-lui `aria-hidden="true"`. |
+| `cards` | ✓ | Le conteneur des cartes. |
+| `card` | — | Une carte. Attributs `data-rarity` et `data-value`. |
+| `card-flip`, `card-front`, `card-back` | — | Retournement 3D. Avec un `card-back`, la carte sort face cachée. |
+| `pack-button` | recommandé | Le bouton d’ouverture (clavier, lecteurs d’écran). Votre texte est conservé. |
+| `pack-description` | — | Description du geste (générée si elle est vide). |
+| `tear-zone` | — | Zone de swipe. Sans elle, le swipe démarre n’importe où sur le paquet. |
+| `cut`, `hint`, `hint-label`, `shine`, `burst`, `effects` | — | Retours visuels (voir `theme.css`). |
+| `skip`, `announcer` | — | Bouton « Tout révéler » et région `aria-live`. |
+
+## Ce que le composant écrit
+
+<Source
+  language="html"
+  dark
+  code={`<pack-opening data-state="idle|tearing|opening|revealing|complete"
+              data-phase="cut|auto-cut|cancel|open|settle"
+              data-features="swipe tap card-swipe …"  data-dir="ltr|rtl"  data-motion="reduce">
+  <div data-part="pack" style="--po-progress: .4; --po-cut-from: 0; --po-cut-to: .4; --po-clip-top: polygon(…)">
+  <div data-part="cards" style="--po-tuck-y: …; --po-peek-y: …">
+    <div data-part="card" data-stack="top|below|gone" data-face="down|up" data-revealed data-leaving="left|right"
+         style="--po-index: 0; --po-depth: 0; --po-drag-x: 0px">`}
+/>
+
+Ciblez ces attributs dans votre CSS pour un rendu entièrement personnalisé. Chaque étape de l'ouverture attend les
+animations de son `data-phase` : si vous n’en définissez pas, l’étape passe instantanément.

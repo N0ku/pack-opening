@@ -1,0 +1,211 @@
+/* ==========================================================================
+   pack-opening · magic.css — DOM layers of the magic effects. Optional.
+   Load it after theme.css, with `pack-opening/magic` (the particles). The magic
+   circle, the materialisation, the dissolving pack, the veil and the sheen are
+   here; like the rest of the theme, each step can be restyled or removed.
+   Colours: --po-fx-<effect>-color (fx-color, fxColor and fxColors set them).
+   ========================================================================== */
+
+@layer po.tokens, po.base, po.theme;
+
+/* Height of the dissolve front, from the bottom of the pack (0) to past its top. */
+@property --po-fx-sweep {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
+@layer po.theme {
+  /* ---------------------------------------------------------------- appear
+     Out of view, the pack waits unseen (still focusable: focusing it scrolls it into view).
+     The children fade, not the pack itself: opacity on it would flatten the 3D of `depth`. */
+
+  :where(pack-opening[data-phase='appear-wait']) :is([data-part='pack-body'], [data-part='pack-top'], [data-part='pack-side'], [data-part='hint'], [data-part='hint-label']) {
+    opacity: 0;
+  }
+
+  :where(pack-opening[data-phase='appear']) :is([data-part='pack-body'], [data-part='pack-top'], [data-part='pack-side']) {
+    animation: po-fx-materialize calc(var(--po-motion-fx-materialize) * var(--po-time)) var(--po-motion-ease-settle)
+      calc(var(--po-motion-fx-materialize-delay) * var(--po-time)) both;
+  }
+
+  :where(pack-opening[data-phase='appear']) :is([data-part='hint'], [data-part='hint-label']) {
+    animation: po-fx-fade-in calc(var(--po-motion-fade) * var(--po-time)) ease-out
+      calc((var(--po-motion-fx-materialize-delay) + var(--po-motion-fx-materialize)) * var(--po-time)) both;
+  }
+
+  :where(pack-opening[data-phase='appear']) [data-part='pack'] {
+    animation: po-fx-arrive calc((var(--po-motion-fx-materialize-delay) + var(--po-motion-fx-materialize)) * var(--po-time))
+      var(--po-motion-ease-settle) both;
+  }
+
+  /* The magic circle: a translucent portal behind the pack, two rings and a band of runes.
+     Only generated while it plays, and never wider than the viewport. */
+  :where(pack-opening[data-phase='appear']) [data-part='stage']::before,
+  :where(pack-opening[data-phase='appear']) [data-part='stage']::after {
+    content: '';
+    grid-area: 1 / 1;
+    position: relative;
+    z-index: 0;
+    width: min(100vw, calc(var(--po-pack-width) * var(--po-fx-appear-circle-size)));
+    aspect-ratio: 1;
+    border-radius: 50%;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  :where(pack-opening[data-phase='appear'][data-features~='hint']) [data-part='stage']::before,
+  :where(pack-opening[data-phase='appear'][data-features~='hint']) [data-part='stage']::after {
+    translate: 0 calc(var(--po-hint-label-space) / -2);
+  }
+
+  :where(pack-opening[data-phase='appear']) [data-part='stage']::before {
+    background:
+      radial-gradient(
+        closest-side,
+        transparent 86%,
+        color-mix(in srgb, var(--po-fx-appear-color) 80%, transparent) 87% 88.5%,
+        transparent 90%
+      ),
+      radial-gradient(
+        closest-side,
+        transparent 64%,
+        color-mix(in srgb, var(--po-fx-appear-color) 65%, transparent) 65% 66%,
+        transparent 67.5%
+      ),
+      radial-gradient(
+        closest-side,
+        color-mix(in srgb, var(--po-fx-appear-color) 30%, transparent),
+        color-mix(in srgb, var(--po-fx-appear-color) 8%, transparent) 60%,
+        transparent 100%
+      );
+  }
+
+  :where(pack-opening[data-phase='appear']) [data-part='stage']::after {
+    background: repeating-conic-gradient(
+      color-mix(in srgb, var(--po-fx-appear-color) 70%, transparent) 0 1.5deg,
+      transparent 1.5deg 7.5deg,
+      color-mix(in srgb, var(--po-fx-appear-color) 40%, transparent) 7.5deg 10deg,
+      transparent 10deg 15deg
+    );
+    -webkit-mask: radial-gradient(closest-side, transparent 70%, black 71% 82%, transparent 83%);
+    mask: radial-gradient(closest-side, transparent 70%, black 71% 82%, transparent 83%);
+  }
+
+  :where(pack-opening[data-phase='appear']) [data-part='stage']::before {
+    animation: po-fx-circle calc(var(--po-motion-fx-appear) * var(--po-time)) var(--po-motion-ease-in-out) both;
+  }
+
+  :where(pack-opening[data-phase='appear']) [data-part='stage']::after {
+    animation: po-fx-runes calc(var(--po-motion-fx-appear) * var(--po-time)) var(--po-motion-ease-in-out) both;
+  }
+
+  /* ---------------------------------------------------------------- dissolve
+     The empty pack stays where it is and falls apart from the bottom up (the particles follow
+     the same front), while the cards settle out of a veil of light. */
+
+  :where(pack-opening[data-features~='dissolve'][data-phase='settle']) [data-part='stage'] [data-part='pack'] {
+    animation: po-fx-dissolve calc(var(--po-motion-settle) * var(--po-time)) linear forwards;
+  }
+
+  :where(pack-opening[data-features~='dissolve'][data-phase='settle']) :is([data-part='pack-body'], [data-part='pack-side']) {
+    -webkit-mask: linear-gradient(to top, transparent calc(var(--po-fx-sweep) * 100% - 14%), black calc(var(--po-fx-sweep) * 100% + 14%));
+    mask: linear-gradient(to top, transparent calc(var(--po-fx-sweep) * 100% - 14%), black calc(var(--po-fx-sweep) * 100% + 14%));
+    filter: brightness(calc(1 + var(--po-fx-sweep) * 0.9)) blur(calc(var(--po-fx-sweep) * 2px));
+  }
+
+  :where(pack-opening[data-features~='dissolve']) [data-part='cards']::after {
+    content: '';
+    position: absolute;
+    inset: -20%;
+    border-radius: 50%;
+    background: radial-gradient(
+      closest-side,
+      color-mix(in srgb, var(--po-fx-dissolve-color) 55%, transparent),
+      color-mix(in srgb, var(--po-fx-dissolve-color) 16%, transparent) 55%,
+      transparent
+    );
+    opacity: 0;
+    translate: 0 0 2px;
+    pointer-events: none;
+  }
+
+  :where(pack-opening[data-features~='dissolve'][data-phase='settle']) [data-part='cards']::after {
+    animation: po-fx-veil calc(var(--po-motion-fx-veil) * var(--po-time)) ease-out both;
+  }
+
+  /* ---------------------------------------------------------------- shimmer
+     A sheen sweeps across each card of the summary, after it slid in. */
+
+  :where(pack-opening[data-features~='shimmer'][data-features~='summary'][data-state='complete']) [data-part='card-front']::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(
+      115deg,
+      transparent 35%,
+      color-mix(in srgb, var(--po-fx-shimmer-color) 50%, transparent) 50%,
+      transparent 65%
+    );
+    background-size: 250% 100%;
+    animation: po-fx-sheen calc(var(--po-motion-fx-shimmer) * 0.6 * var(--po-time)) var(--po-motion-ease-in-out)
+      calc((var(--po-motion-summary-in) * 0.7 + var(--po-index, 0) * var(--po-motion-summary-stagger)) * var(--po-time)) both;
+  }
+
+  /* ---------------------------------------------------------------- Keyframes */
+
+  @keyframes po-fx-materialize {
+    from {
+      opacity: 0;
+      filter: blur(var(--po-fx-appear-blur)) brightness(2.2) saturate(0.3);
+    }
+    55% {
+      opacity: 1;
+    }
+    to {
+      opacity: 1;
+      filter: none;
+    }
+  }
+
+  @keyframes po-fx-arrive {
+    from { scale: 0.9; }
+    to { scale: 1; }
+  }
+
+  @keyframes po-fx-fade-in {
+    from { opacity: 0; }
+  }
+
+  @keyframes po-fx-circle {
+    0% { opacity: 0; scale: 0.7; rotate: -50deg; }
+    30% { opacity: 0.9; }
+    70% { opacity: 0.75; }
+    100% { opacity: 0; scale: 1.08; rotate: 25deg; }
+  }
+
+  @keyframes po-fx-runes {
+    0% { opacity: 0; scale: 0.75; rotate: 40deg; }
+    35% { opacity: 0.8; }
+    70% { opacity: 0.6; }
+    100% { opacity: 0; scale: 1.05; rotate: -60deg; }
+  }
+
+  @keyframes po-fx-dissolve {
+    from { --po-fx-sweep: 0; }
+    to { --po-fx-sweep: 1.2; }
+  }
+
+  @keyframes po-fx-veil {
+    0% { opacity: 0; scale: 0.7; }
+    30% { opacity: 0.9; }
+    100% { opacity: 0; scale: 1.15; }
+  }
+
+  @keyframes po-fx-sheen {
+    from { background-position: 100% 0; opacity: 1; }
+    to { background-position: -50% 0; opacity: 0; }
+  }
+}

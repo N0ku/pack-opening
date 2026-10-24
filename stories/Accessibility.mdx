@@ -1,0 +1,46 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Accessibility" />
+
+# Accessibilité
+
+Objectif : **WCAG 2.2 AA**. Chaque story est auditée par axe (`npm run test:stories`), et la story
+*Pack opening › Keyboard Only* vérifie le parcours complet au clavier.
+
+## Clavier (toujours actif, non désactivable)
+
+| Touche | Sur | Effet |
+| --- | --- | --- |
+| `Tab` | — | Atteint le bouton du paquet, puis la carte du dessus, puis le bouton « Tout révéler ». |
+| `Entrée` / `Espace` | paquet | Ouvre le paquet (la coupe est jouée automatiquement). |
+| `Entrée` / `Espace` | carte | Retourne la carte, puis passe à la suivante. |
+| `←` / `→` | carte révélée | Envoie la carte à gauche ou à droite. |
+
+Le focus suit chaque étape : carte du dessus après l’ouverture, carte suivante après chaque passage, liste du
+résumé à la fin. Il n’est déplacé que si le composant avait déjà le focus.
+
+## Lecteurs d’écran
+
+- Le paquet est un vrai `<button>`. Son nom est « Ouvrir le booster », et sa description explique le geste selon les features actives.
+- La carte du dessus est un contrôle nommé « Retourner la carte 2 sur 5 », puis « Voltix, rare. Carte 2 sur 5. Carte suivante ».
+- **Pas de spoiler** : les cartes non révélées sont `inert` et `aria-hidden`. Le clone décoratif du paquet est aussi `aria-hidden`.
+- Une région `aria-live` annonce « Booster ouvert, 5 cartes », chaque carte révélée, puis « Toutes les cartes sont révélées ».
+- `aria-busy` est actif pendant l’animation d’ouverture. Le résumé est une `role="list"` nommée.
+- Tous les textes sont traduisibles (`locale` vaut `fr` ou `en`) et remplaçables (`labels`).
+
+## Mouvement
+
+`prefers-reduced-motion: reduce` ou `motion="reduce"` mettent toutes les durées à 0 et coupent `tilt`, `shine`,
+`sparks` et `burst`. Le flash ne se produit qu’une fois (WCAG 2.3.1).
+
+## Si vous désactivez des features
+
+- **Gestes (2.5.1, 2.5.7)** : `tap` est l’alternative au swipe pour un seul pointeur. Si vous désactivez `swipe`
+  **et** `tap`, un avertissement s’affiche : prévoyez un autre contrôle qui appelle `open()`.
+- **`skip`** permet d’éviter de parcourir chaque carte une à une. Gardez-le si les packs sont longs.
+- **Mode headless** : fournissez au minimum `pack-button`, sinon les utilisateurs du clavier ne peuvent pas ouvrir le paquet (un avertissement le signale).
+
+## Contrastes et cibles
+
+Les tokens sémantiques `color.content.secondary` (≥ 4,5:1) et `color.focus.ring` (≥ 3:1) sont fixés pour chaque
+thème. Le bouton « Tout révéler » mesure au moins 44 px de haut (`--po-skip-min-height`, WCAG 2.5.8).
